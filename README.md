@@ -4,6 +4,80 @@
 
 이 문서는 현재 유지하는 코드의 기준 문서다. 이전의 단일 Depth Student, absolute-action Student, 중간 pose mapping 방식은 폐기했다. 현재 파이프라인은 **MuJoCo scripted teacher -> dual-depth ACT 데이터셋 -> ResNet18 + Transformer ACT 학습 -> MuJoCo 검증 -> SO-101 실로봇 배포**다.
 
+## 빠른 안내
+
+처음 저장소를 열었다면 아래 순서로 보면 된다.
+
+1. [현재 목표와 상태](#1-현재-목표와-상태)
+2. [파일별 역할](#3-최종-폴더-구조)
+3. [데이터 구조와 모델](#4-데이터에-저장되는-값)
+4. [Ubuntu 전체 실행 명령](#7-ubuntu-기준-전체-실행-순서)
+5. [MuJoCo DAgger 보완](#8-mujoco-dagger-보완)
+6. [실제 로봇 실행 명령](#9-실제-로봇-적용)
+
+### 목적별 시작 파일
+
+| 목적 | 실행 또는 확인할 파일 | 역할 |
+| --- | --- | --- |
+| MuJoCo 환경 확인 | `scene_ball_bins.xml`, `so101_ball_bins_env.py` | 로봇, 테이블, 블록, 상자, Top/Side Depth 카메라와 task 환경 |
+| 정답 동작 확인 | `play_waypoint_teacher.py` | scripted teacher의 pick-place-return 전체 동작 시각화 |
+| 성공 teacher 생성 | `collect_scripted_teacher_depth_dataset.py` | 성공한 seed와 teacher trajectory 수집 |
+| ACT 데이터 변환 | `collect_scripted_teacher_delta_depth_dataset.py` | Top/Side Depth, 관절 상태, future action 정답을 동기화 |
+| 데이터 검수 | `play_fixed_delta_episode.py`, `visualize_fixed_delta_diversity.py` | episode 재생과 위치·궤적 다양성 확인 |
+| ACT 학습 | `train_depth_act.py` | ResNet18 + Transformer ACT 학습과 checkpoint 저장 |
+| MuJoCo 모델 평가 | `play_depth_act.py`, `diagnose_depth_act.py` | checkpoint 시각화와 closed-loop 진단 |
+| 실패 구간 보완 | `collect_depth_act_dagger.py` | 모델 실패 구간을 teacher correction 데이터로 수집 |
+| 실제 Depth 확인 | `preview_realsense_depth.py`, `measure_realsense_depth_noise.py` | D435 serial/화면 확인과 noise profile 측정 |
+| 관절 mapping | `sim2real_joint_mapping.py`, `sweep_joint_calibration.py` | MuJoCo radian과 LeRobot 관절값 변환 |
+| 실로봇 정답 검증 | `run_waypoint_on_real_robot.py` | scripted teacher trajectory를 실제 SO-101에 실행 |
+| 실로봇 모델 실행 | `run_depth_act_model_on_real_robot.py` | 두 D435, ACT, mapping, 안전 제한을 통합한 최종 실행기 |
+| 회귀 테스트 | `tests/` | 데이터, 모델, 카메라, mapping, 실로봇 실행 코드 검증 |
+
+### 자주 쓰는 Python 명령
+
+아래는 전체 과정의 최소 명령 모음이다. 경로와 모든 인자는 [7절](#7-ubuntu-기준-전체-실행-순서)과 [9절](#9-실제-로봇-적용)에 정리되어 있다.
+
+```bash
+cd /home/zeta/soarm_desktop_fixed
+conda activate soarm-mujoco
+
+# 1. scripted teacher를 화면으로 확인
+python play_waypoint_teacher.py --seed 10000 --cube-jitter 0.020 --randomize-bin --bin-jitter 0.010
+
+# 2. 성공 teacher 500개 생성
+python collect_scripted_teacher_depth_dataset.py \
+  --episodes 500 --out-dir ./datasets/near_position_teacher_500_v1 \
+  --curriculum near --cube-jitter 0.020 --randomize-bin --bin-jitter 0.010 \
+  --capture-stride 1 --max-steps 1100 --seed 10000 --max-attempts 2500
+
+# 3. dual-depth ACT 데이터셋 생성
+python collect_scripted_teacher_delta_depth_dataset.py \
+  --source-dataset ./datasets/near_position_teacher_500_v1 \
+  --out-dir ./datasets/near_position_depth_act_500_v1 --max-episodes 500
+
+# 4. 저장된 정답 episode 확인
+python play_fixed_delta_episode.py \
+  --dataset ./datasets/near_position_depth_act_500_v1 \
+  --episode-index 0 --view-camera free --playback-speed 1.0
+
+# 5. ACT 학습: 전체 권장 인자는 7.7절 참고
+python train_depth_act.py \
+  --dataset ./datasets/near_position_depth_act_500_v1 \
+  --output-dir ./runs/near_position_depth_act_500_v1 \
+  --epochs 30 --batch-size 8 --device cuda
+
+# 6. MuJoCo에서 checkpoint를 시각적으로 확인
+CUDA_VISIBLE_DEVICES="" python play_depth_act.py \
+  --model ./runs/near_position_depth_act_500_v1/checkpoints/epoch_0008.pt \
+  --seed 30000 --episodes 3 --max-steps 1100 \
+  --cube-jitter 0.020 --bin-jitter 0.010 --device cpu
+
+# 7. 코드 회귀 테스트
+python -m unittest discover -s tests -p 'test_*.py' -v
+```
+
+실제 로봇에서는 먼저 `run_depth_act_model_on_real_robot.py`를 `--send` 없이 실행해 Depth, mapping, 목표 관절값을 확인한다. 모터 명령을 보내는 절차는 [9.4절](#94-실제-구동)의 안전 확인 후 진행한다.
+
 ## 1. 현재 목표와 상태
 
 목표는 SO-101이 Top/Side RealSense D435 Depth와 현재 관절 상태를 이용해 세로 블록을 잡고, 사각 상자에 넣고, 집게를 놓은 뒤 초기 자세로 돌아오게 만드는 것이다.
@@ -20,10 +94,10 @@
 
 ### 데모 영상
 
-- [동작 영상 1](media/KakaoTalk_20260812_121136885.mp4)
-- [동작 영상 2](media/KakaoTalk_20260812_121154524.mp4)
-- [동작 영상 3](media/KakaoTalk_20260812_122736994.mp4)
-- [동작 영상 4](media/KakaoTalk_20260812_122920981.mp4)
+- [SO-101 실로봇 관절 동작 검증](media/so101_real_robot_motion_demo.mp4)
+- [SO-101 실로봇 Pick & Place 시연](media/so101_real_robot_pick_place_demo.mp4)
+- [MuJoCo Pick & Place 시뮬레이션](media/mujoco_pick_place_simulation_demo.mp4)
+- [MuJoCo와 실로봇 자세 mapping 검증](media/mujoco_sim2real_pose_validation.mp4)
 
 동영상은 모두 GitHub 단일 파일 제한 100MB보다 작아 저장소에 직접 포함한다. 학습 데이터셋과 체크포인트는 용량이 크므로 `.gitignore`로 제외한다.
 
