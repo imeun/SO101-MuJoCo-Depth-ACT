@@ -1,0 +1,324 @@
+{
+  "diagnostics": [
+    {
+      "estimated_real_tick": 0.0879120879120876,
+      "implied_deg_per_real_unit": 1.017275269135645,
+      "joint": "shoulder_pan",
+      "measured_ticks_in_span": 2460,
+      "physical_span_deg_from_ticks": 216.21093750000077,
+      "real_at_sim_high": 110.37362637362638,
+      "real_at_sim_low": -105.89010989010988,
+      "real_span": 216.26373626373626,
+      "residual_deg_at_sim_high": -1.868007124118086,
+      "residual_deg_at_sim_low": 1.868007124118086,
+      "reversed_axis": false,
+      "sim_span_deg": 219.99975051197245,
+      "sim_vs_physical_span_deg": 3.7888130119716834,
+      "tick_matches_observed_arm_unit": true,
+      "unit_interpretation": "reported values are physical degrees (scale ~1.0)",
+      "warnings": [],
+      "wrap_corrected": false
+    },
+    {
+      "estimated_real_tick": 0.0879120879120876,
+      "implied_deg_per_real_unit": 0.9623523582951233,
+      "joint": "shoulder_lift",
+      "measured_ticks_in_span": 2364,
+      "physical_span_deg_from_ticks": 207.77343750000074,
+      "real_at_sim_high": 207.78021978021977,
+      "real_at_sim_low": -0.04395604395604396,
+      "real_span": 207.82417582417582,
+      "residual_deg_at_sim_high": 3.912045054519929,
+      "residual_deg_at_sim_low": -3.912045054519929,
+      "reversed_axis": false,
+      "sim_span_deg": 200.00008571513595,
+      "sim_vs_physical_span_deg": 7.773351784864786,
+      "tick_matches_observed_arm_unit": true,
+      "unit_interpretation": "reported values are physical degrees (scale ~1.0)",
+      "warnings": [
+        "physical travel 207.8 deg differs from the MuJoCo range 200.0 deg by 7.8 deg"
+      ],
+      "wrap_corrected": true
+    },
+    {
+      "estimated_real_tick": 0.0879120879120876,
+      "implied_deg_per_real_unit": 0.9963272197328054,
+      "joint": "elbow_flex",
+      "measured_ticks_in_span": 2211,
+      "physical_span_deg_from_ticks": 194.32617187500068,
+      "real_at_sim_high": 358.8131868131868,
+      "real_at_sim_low": 164.43956043956044,
+      "real_span": 194.37362637362637,
+      "residual_deg_at_sim_high": 0.35694580970409384,
+      "residual_deg_at_sim_low": -0.35694580970404294,
+      "reversed_axis": false,
+      "sim_span_deg": 193.65973475421825,
+      "sim_vs_physical_span_deg": 0.6664371207824331,
+      "tick_matches_observed_arm_unit": true,
+      "unit_interpretation": "reported values are physical degrees (scale ~1.0)",
+      "warnings": [],
+      "wrap_corrected": true
+    },
+    {
+      "estimated_real_tick": 0.0879120879120876,
+      "implied_deg_per_real_unit": 0.9315717086563552,
+      "joint": "wrist_flex",
+      "measured_ticks_in_span": 2320,
+      "physical_span_deg_from_ticks": 203.90625000000074,
+      "real_at_sim_high": 122.37362637362638,
+      "real_at_sim_low": -81.58241758241758,
+      "real_span": 203.95604395604397,
+      "residual_deg_at_sim_high": 6.9781817985606995,
+      "residual_deg_at_sim_low": -6.9781817985606995,
+      "reversed_axis": false,
+      "sim_span_deg": 189.99968035892257,
+      "sim_vs_physical_span_deg": 13.906569641078164,
+      "tick_matches_observed_arm_unit": true,
+      "unit_interpretation": "unexpected",
+      "warnings": [
+        "implied scale 0.932 deg per real unit is neither ~1.0 nor ~2.0; the MuJoCo range and the physical travel disagree, and the fitted scale is absorbing that error across the whole joint",
+        "physical travel 203.9 deg differs from the MuJoCo range 190.0 deg by 13.9 deg"
+      ],
+      "wrap_corrected": false
+    },
+    {
+      "estimated_real_tick": 0.0879120879120876,
+      "implied_deg_per_real_unit": 0.9599167106997475,
+      "joint": "wrist_roll",
+      "measured_ticks_in_span": 3792,
+      "physical_span_deg_from_ticks": 333.2812500000012,
+      "real_at_sim_high": 436.967032967033,
+      "real_at_sim_low": 103.6043956043956,
+      "real_span": 333.3626373626374,
+      "residual_deg_at_sim_high": 6.681135517650898,
+      "residual_deg_at_sim_low": -6.681135517650949,
+      "reversed_axis": false,
+      "sim_span_deg": 320.0003663273356,
+      "sim_vs_physical_span_deg": 13.280883672665595,
+      "tick_matches_observed_arm_unit": true,
+      "unit_interpretation": "reported values are physical degrees (scale ~1.0)",
+      "warnings": [
+        "physical travel 333.3 deg differs from the MuJoCo range 320.0 deg by 13.3 deg"
+      ],
+      "wrap_corrected": true
+    },
+    {
+      "estimated_real_tick": 0.06729475100941329,
+      "joint": "gripper",
+      "measured_ticks_in_span": 1438,
+      "real_at_sim_high": 98.78869448183042,
+      "real_at_sim_low": 2.0188425302826376,
+      "real_span": 96.76985195154778,
+      "residual_deg_at_sim_high": 0.0,
+      "residual_deg_at_sim_low": 0.0,
+      "reversed_axis": false,
+      "sim_span_deg": 109.99987525598624,
+      "unit_note": "percent_0_100; degree-span diagnostics do not apply",
+      "warnings": [
+        "validate the gripper by jaw gap in mm against the sim jaw sites, not by angle"
+      ],
+      "wrap_corrected": false
+    }
+  ],
+  "formula_real_to_sim": "sim_rad = scale_rad_per_real_unit * real_value + offset_rad",
+  "formula_sim_to_real": "real_value = (sim_rad - offset_rad) / scale_rad_per_real_unit",
+  "joint_names": [
+    "shoulder_pan",
+    "shoulder_lift",
+    "elbow_flex",
+    "wrist_flex",
+    "wrist_roll",
+    "gripper"
+  ],
+  "measurements": {
+    "excursion_at_sim_high": [
+      216.35164835164835,
+      358.24175824175825,
+      104.43956043956044,
+      205.01098901098902,
+      80.17582417582418,
+      98.31763122476447
+    ],
+    "excursion_at_sim_low": [
+      216.35164835164835,
+      355.3406593406594,
+      358.68131868131866,
+      204.2197802197802,
+      355.86813186813185,
+      97.10632570659489
+    ],
+    "sample_counts": {
+      "high": [
+        546,
+        338,
+        261,
+        338,
+        625,
+        270
+      ],
+      "low": [
+        167,
+        121,
+        202,
+        216,
+        210,
+        89
+      ]
+    }
+  },
+  "measurements_file": "/home/zeta/soarm_desktop_fixed/sweep_measurements.json",
+  "method": "sweep_fixed_unit",
+  "offset_rad": [
+    -0.03912606235240046,
+    -1.8128408889945495,
+    -4.566241629833076,
+    -0.3559704496375249,
+    -4.668695635390389,
+    -0.21458271210013907
+  ],
+  "port": "/dev/ttyACM0",
+  "real_at_sim_high": [
+    110.37362637362638,
+    207.78021978021977,
+    358.8131868131868,
+    122.37362637362638,
+    436.967032967033,
+    98.78869448183042
+  ],
+  "real_at_sim_low": [
+    -105.89010989010988,
+    -0.04395604395604396,
+    164.43956043956044,
+    -81.58241758241758,
+    103.6043956043956,
+    2.0188425302826376
+  ],
+  "real_period": [
+    360.0,
+    360.0,
+    360.0,
+    360.0,
+    360.0,
+    0.0
+  ],
+  "real_reference": [
+    2.241758241758248,
+    103.86813186813185,
+    261.6263736263736,
+    20.3956043956044,
+    270.2857142857143,
+    50.40376850605653
+  ],
+  "real_units": [
+    "lerobot_degree",
+    "lerobot_degree",
+    "lerobot_degree",
+    "lerobot_degree",
+    "lerobot_degree",
+    "percent_0_100"
+  ],
+  "residual_deg": [
+    [
+      1.868007124118086,
+      -3.912045054519929,
+      -0.35694580970404294,
+      -6.9781817985606995,
+      -6.681135517650949,
+      0.0
+    ],
+    [
+      -1.868007124118086,
+      3.912045054519929,
+      0.35694580970409384,
+      6.9781817985606995,
+      6.681135517650898,
+      0.0
+    ]
+  ],
+  "robot_calibration": null,
+  "robot_id": "my_awesome_follower_arm",
+  "scale_rad_per_real_unit": [
+    0.017453292519943295,
+    0.017453292519943295,
+    0.017453292519943295,
+    0.017453292519943295,
+    0.017453292519943295,
+    0.019839443393602225
+  ],
+  "sim_joint_high_rad": [
+    1.91986,
+    1.74533,
+    1.69,
+    1.65806,
+    2.84121,
+    1.74533
+  ],
+  "sim_joint_low_rad": [
+    -1.91986,
+    -1.74533,
+    -1.69,
+    -1.65806,
+    -2.74385,
+    -0.17453
+  ],
+  "sim_unit": "radian",
+  "task_envelope_check": [
+    {
+      "joint": "shoulder_pan",
+      "measured_real_high": 110.37362637362638,
+      "measured_real_low": -105.89010989010988,
+      "reachable": true,
+      "required_real_high": 99.64458341399819,
+      "required_real_low": -95.16106693048171
+    },
+    {
+      "joint": "shoulder_lift",
+      "measured_real_high": 207.78021978021977,
+      "measured_real_low": -0.04395604395604396,
+      "reachable": true,
+      "required_real_high": 138.24559957598126,
+      "required_real_low": 6.46530669589191
+    },
+    {
+      "joint": "elbow_flex",
+      "measured_real_high": 358.8131868131868,
+      "measured_real_low": 164.43956043956044,
+      "reachable": true,
+      "required_real_high": 357.31032541322105,
+      "required_real_low": 273.0855295289901
+    },
+    {
+      "joint": "wrist_flex",
+      "measured_real_high": 122.37362637362638,
+      "measured_real_low": -81.58241758241758,
+      "reachable": true,
+      "required_real_high": 106.33927366522788,
+      "required_real_low": -25.44101921486146
+    },
+    {
+      "joint": "wrist_roll",
+      "measured_real_high": 436.967032967033,
+      "measured_real_low": 103.6043956043956,
+      "reachable": true,
+      "required_real_high": 382.0881147651821,
+      "required_real_low": 330.521913203408
+    },
+    {
+      "joint": "gripper",
+      "measured_real_high": 98.78869448183042,
+      "measured_real_low": 2.0188425302826376,
+      "reachable": true,
+      "required_real_high": 61.22060422782903,
+      "required_real_low": 2.018842530282638
+    }
+  ],
+  "version": 4,
+  "wrap_corrected": [
+    false,
+    true,
+    true,
+    false,
+    true,
+    false
+  ]
+}
